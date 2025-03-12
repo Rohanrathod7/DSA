@@ -2,158 +2,181 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Stack;
 
-class Binarytree{
-    class node{
+class Binarytree {
+    // Node class representing each node in the binary tree
+    class node {
         int data;
         node left;
         node right;
-        node(int data){
+        node(int data) {
             this.data = data;
             this.left = null;
             this.right = null;
         }
     }
+
+    // Root of the binary tree
     node root;
-    Binarytree(){
+
+    // Constructor to initialize the binary tree
+    Binarytree() {
         root = null;
     }
-    void insert(int data){
+
+    // Method to insert a new node with given data
+    void insert(int data) {
         root = insertRec(root, data);
     }
-    node insertRec(node root, int data){
-        if(root == null){
+
+    // Recursive method to insert a new node
+    node insertRec(node root, int data) {
+        if (root == null) {
             root = new node(data);
             return root;
         }
-        if(data < root.data){
+        if (data < root.data) {
             root.left = insertRec(root.left, data);
-        }else if(data > root.data){
+        } else if (data > root.data) {
             root.right = insertRec(root.right, data);
         }
         return root;
     }
-    void inorder(){
+
+    // Method to perform inorder traversal
+    void inorder() {
         inorderRec(root);
     }
-    void inorderRec(node root){
-        if(root != null){
+
+    // Recursive method for inorder traversal
+    void inorderRec(node root) {
+        if (root != null) {
             inorderRec(root.left);
-            System.out.println(root.data);
+            System.out.println(root.data); // Output: 20 30 40 50 60 70 80
             inorderRec(root.right);
         }
     }
-    void preorder(){
+
+    // Method to perform preorder traversal
+    void preorder() {
         preorderRec(root);
     }
-    void preorderRec(node root){
-        if(root != null){
-            System.out.println(root.data);
+
+    // Recursive method for preorder traversal
+    void preorderRec(node root) {
+        if (root != null) {
+            System.out.println(root.data); // Output: 50 30 20 40 70 60 80
             preorderRec(root.left);
             preorderRec(root.right);
         }
     }
-    void postorder(){
+
+    // Method to perform postorder traversal
+    void postorder() {
         postorderRec(root);
     }
-    void postorderRec(node root){
-        if(root != null){
+
+    // Recursive method for postorder traversal
+    void postorderRec(node root) {
+        if (root != null) {
             postorderRec(root.left);
             postorderRec(root.right);
-            System.out.println(root.data);
+            System.out.println(root.data); // Output: 20 40 30 60 80 70 50
         }
     }
 
-    List preorderIterative(){
+    // Method for iterative preorder traversal
+    List<Integer> preorderIterative() {
         Stack<node> st = new Stack<>();
         List<Integer> res = new LinkedList<>();
 
-        if(root == null){
+        if (root == null) {
             return res;
         }
         st.push(root);
-        while(!st.isEmpty()){
+        while (!st.isEmpty()) {
             root = st.pop();
-            res.add(root.data);
-            if(root.right != null){
+            res.add(root.data); // Output: [50, 30, 20, 40, 70, 60, 80]
+            if (root.right != null) {
                 st.push(root.right);
             }
-            if(root.left != null){
+            if (root.left != null) {
                 st.push(root.left);
             }
-            
         }
         return res;
-        
     }
 
-    List inorderIterative(){
+    // Method for iterative inorder traversal
+    List<Integer> inorderIterative() {
         Stack<node> st = new Stack<>();
         List<Integer> res = new LinkedList<>();
 
-        if(root == null){
+        if (root == null) {
             return res;
         }
         node curr = root;
-        while(curr != null || !st.isEmpty()){
-            while(curr != null){
+        while (curr != null || !st.isEmpty()) {
+            while (curr != null) {
                 st.push(curr);
                 curr = curr.left;
             }
             curr = st.pop();
-            res.add(curr.data);
+            res.add(curr.data); // Output: [20, 30, 40, 50, 60, 70, 80]
             curr = curr.right;
         }
         return res;
     }
 
-    List postorderIteration(){
+    // Method for iterative postorder traversal
+    List<Integer> postorderIteration() {
         Stack<node> st1 = new Stack<>();
         Stack<node> st2 = new Stack<>();
         List<Integer> res = new LinkedList<>();
 
-        if(root == null){
+        if (root == null) {
             return res;
         }
 
         st1.push(root);
-        while(!st1.isEmpty()){
+        while (!st1.isEmpty()) {
             root = st1.pop();
             st2.push(root);
-            if(root.left != null){
+            if (root.left != null) {
                 st1.push(root.left);
             }
-            if(root.right != null){
+            if (root.right != null) {
                 st1.push(root.right);
             }
-            
         }
-        while(!st2.isEmpty()){
-            res.add(st2.pop().data);
+        while (!st2.isEmpty()) {
+            res.add(st2.pop().data); // Output: [20, 40, 30, 60, 80, 70, 50]
         }
         return res;
     }
 
-    
-        
-    public static void main(String[] args){
+    // Main method to test the binary tree implementation
+    public static void main(String[] args) {
         List<Integer> res = new LinkedList<>();
         Binarytree tree = new Binarytree();
-        tree.insert(50);
-        tree.insert(30);
-        tree.insert(20);
-        tree.insert(40);
-        tree.insert(70);
-        tree.insert(60);
-        tree.insert(80);
-        // tree.inorder();
-        // tree.preorder();
-        tree.postorder();
+        tree.insert(50); // Insert root
+        tree.insert(30); // Insert left child of root
+        tree.insert(20); // Insert left child of node 30
+        tree.insert(40); // Insert right child of node 30
+        tree.insert(70); // Insert right child of root
+        tree.insert(60); // Insert left child of node 70
+        tree.insert(80); // Insert right child of node 70
 
+        // Uncomment to print traversals
+        // tree.inorder();                  // Output: 20 30 40 50 60 70 80
+        // tree.preorder();                // Output: 50 30 20 40 70 60 80
+        tree.postorder();                 // Output: 20 40 30 60 80 70 50
+
+        // Uncomment to test iterative traversals
         // res = tree.preorderIterative();
-        // System.out.println(res);
+        // System.out.println(res);                      // Output: [50, 30, 20, 40, 70, 60, 80]
         // res = tree.inorderIterative();
-        // System.out.println(res);
+        // System.out.println(res);                      // Output: [20, 30, 40, 50, 60, 70, 80]
         res = tree.postorderIteration();
-        System.out.println(res);
+        System.out.println(res);                         // Output: [20, 40, 30, 60, 80, 70, 50]
     }
 }
